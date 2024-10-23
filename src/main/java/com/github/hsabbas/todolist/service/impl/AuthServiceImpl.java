@@ -1,5 +1,6 @@
 package com.github.hsabbas.todolist.service.impl;
 
+import com.github.hsabbas.todolist.constants.Roles;
 import com.github.hsabbas.todolist.model.RegistrationRequest;
 import com.github.hsabbas.todolist.model.User;
 import com.github.hsabbas.todolist.repository.UserRepository;
@@ -21,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
         String hashedPassword = passwordEncoder.encode(registrationRequest.getPassword());
         user.setPassword(hashedPassword);
         user.setEmail(registrationRequest.getEmail());
-        user.setRole("USER");
+        user.setRole(Roles.PREFIX + Roles.USER);
         User savedUser = userRepository.save(user);
         if(savedUser.getId() > 0){
             return HttpStatus.CREATED;
