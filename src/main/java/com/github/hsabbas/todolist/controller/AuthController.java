@@ -1,24 +1,27 @@
 package com.github.hsabbas.todolist.controller;
 
+import com.github.hsabbas.todolist.config.JWTTokenManager;
 import com.github.hsabbas.todolist.constants.APIPaths;
+import com.github.hsabbas.todolist.model.LoginRequest;
+import com.github.hsabbas.todolist.model.LoginResponse;
 import com.github.hsabbas.todolist.model.RegistrationRequest;
-import com.github.hsabbas.todolist.model.User;
-import com.github.hsabbas.todolist.repository.UserRepository;
 import com.github.hsabbas.todolist.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
     private final AuthService authService;
-    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JWTTokenManager jwtTokenManager;
 
     @PostMapping(APIPaths.REGISTER)
     public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest registrationRequest){
@@ -35,9 +38,16 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(APIPaths.LOGIN)
-    public ResponseEntity<User> login(Authentication authentication){
-        Optional<User> optionalUser = userRepository.findByEmail(authentication.getName());
-        return new ResponseEntity<>(optionalUser.orElse(null), HttpStatus.OK);
+    @PostMapping(APIPaths.LOGIN)
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+        Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getEmail(), loginRequest.getPassword());
+        Authentication authenticatedAuthentication = authenticationManager.authenticate(authentication);
+
+        if(!authenticatedAuthentication.isAuthenticated()){
+            return new ResponseEntity<>(new LoginResponse(false, ""), HttpStatus.UNAUTHORIZED);
+        }
+
+        String jwtToken = jwtTokenManager.generateJWTToken(authenticatedAuthentication);
+        return new ResponseEntity<>(new LoginResponse(true, jwtToken), HttpStatus.OK);
     }
 }
