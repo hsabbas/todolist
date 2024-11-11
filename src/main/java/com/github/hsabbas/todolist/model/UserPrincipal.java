@@ -10,11 +10,13 @@ import java.util.List;
 
 @AllArgsConstructor
 public class UserPrincipal implements UserDetails {
+    private long userId;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
     public UserPrincipal(User user) {
+        userId = user.getId();
         email = user.getEmail();
         password = user.getPassword();
         grantedAuthorities = List.of(new SimpleGrantedAuthority(user.getRole()));
@@ -33,5 +35,9 @@ public class UserPrincipal implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public long getId(){
+        return userId;
     }
 }

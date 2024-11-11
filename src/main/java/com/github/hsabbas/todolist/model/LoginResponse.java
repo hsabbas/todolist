@@ -1,3 +1,3 @@
 package com.github.hsabbas.todolist.model;
 
-public record LoginResponse (boolean authenticated, String jwtToken){}
+public record LoginResponse (boolean authenticated, long id, String email){}

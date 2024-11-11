@@ -21,4 +21,5 @@ public class Task {
     private Date creationDate;
     @Column(name = "due_date")
     private Date dueDate;
+    private boolean complete;
 }

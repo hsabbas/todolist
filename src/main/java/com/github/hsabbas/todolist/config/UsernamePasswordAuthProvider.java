@@ -1,5 +1,6 @@
 package com.github.hsabbas.todolist.config;
 
+import com.github.hsabbas.todolist.model.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,9 +22,9 @@ public class UsernamePasswordAuthProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(email);
         if(passwordEncoder.matches(password, userDetails.getPassword())){
-            return new UsernamePasswordAuthenticationToken(email, password, userDetails.getAuthorities());
+            return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         }
         throw new BadCredentialsException("Incorrect email or password");
     }
