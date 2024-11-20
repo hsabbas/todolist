@@ -1,4 +1,4 @@
-package com.github.hsabbas.todolist.model;
+package com.github.hsabbas.todolist.model.api;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

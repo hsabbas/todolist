@@ -1,9 +1,9 @@
 package com.github.hsabbas.todolist.controller;
 
 import com.github.hsabbas.todolist.constants.APIPaths;
-import com.github.hsabbas.todolist.model.CreateTaskRequest;
+import com.github.hsabbas.todolist.model.api.CreateTaskRequest;
 import com.github.hsabbas.todolist.model.Task;
-import com.github.hsabbas.todolist.model.UpdateTaskRequest;
+import com.github.hsabbas.todolist.model.api.UpdateTaskRequest;
 import com.github.hsabbas.todolist.service.ToDoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ public class ToDoController {
     private final ToDoService toDoService;
 
     @GetMapping(APIPaths.GET_TASKS)
-    public List<Task> getToDoList(Authentication authentication){
-        return toDoService.getTasksByEmail(authentication.getName());
+    public ResponseEntity<List<Task>> getToDoList(Authentication authentication){
+        return new ResponseEntity<>(toDoService.getTasksByEmail(authentication.getName()), HttpStatus.OK);
     }
 
     @PostMapping(APIPaths.POST_TASK)

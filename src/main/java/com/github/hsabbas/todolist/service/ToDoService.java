@@ -1,8 +1,8 @@
 package com.github.hsabbas.todolist.service;
 
-import com.github.hsabbas.todolist.model.CreateTaskRequest;
+import com.github.hsabbas.todolist.model.api.CreateTaskRequest;
 import com.github.hsabbas.todolist.model.Task;
-import com.github.hsabbas.todolist.model.UpdateTaskRequest;
+import com.github.hsabbas.todolist.model.api.UpdateTaskRequest;
 import org.apache.coyote.BadRequestException;
 
 import java.util.List;
