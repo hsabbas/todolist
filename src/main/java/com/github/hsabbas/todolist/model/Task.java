@@ -1,8 +1,6 @@
 package com.github.hsabbas.todolist.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
@@ -11,6 +9,7 @@ import java.sql.Date;
 @Data
 public class Task {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
     private long taskId;
     @Column(name = "user_id")
@@ -21,4 +20,5 @@ public class Task {
     private Date creationDate;
     @Column(name = "due_date")
     private Date dueDate;
+    private boolean complete;
 }

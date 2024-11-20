@@ -3,29 +3,25 @@ package com.github.hsabbas.todolist.config;
 import com.github.hsabbas.todolist.constants.APIPaths;
 import com.github.hsabbas.todolist.constants.JWTConstants;
 import com.github.hsabbas.todolist.constants.Roles;
-import com.github.hsabbas.todolist.filter.CsrfCookieFilter;
 import com.github.hsabbas.todolist.filter.JWTValidationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.Arrays;
 import java.util.Collections;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
+@EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfig {
     @Bean
@@ -41,16 +37,13 @@ public class SecurityConfig {
                     config.setMaxAge(3600L);
                     return config;
                 }))
-                .csrf(csrfConfig -> csrfConfig.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
-                        .ignoringRequestMatchers(APIPaths.PUBLIC_APIS)
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .addFilterBefore(new JWTValidationFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new JWTValidationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(APIPaths.PUBLIC_APIS).permitAll()
-                        .requestMatchers(APIPaths.GET_TASKS).hasRole(Roles.USER))
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(withDefaults());
+                        .requestMatchers(APIPaths.USER).authenticated()
+                        .requestMatchers(APIPaths.USER_APIS).hasRole(Roles.USER))
+                .logout(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
