@@ -1,7 +1,11 @@
 package com.github.hsabbas.todolist.controller;
 
 import com.github.hsabbas.todolist.constants.APIPaths;
-import com.github.hsabbas.todolist.model.*;
+import com.github.hsabbas.todolist.model.User;
+import com.github.hsabbas.todolist.model.api.EmailAvailableResponse;
+import com.github.hsabbas.todolist.model.api.LoginRequest;
+import com.github.hsabbas.todolist.model.api.LoginResponse;
+import com.github.hsabbas.todolist.model.api.RegistrationRequest;
 import com.github.hsabbas.todolist.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

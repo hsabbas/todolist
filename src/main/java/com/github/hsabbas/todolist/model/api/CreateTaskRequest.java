@@ -1,4 +1,4 @@
-package com.github.hsabbas.todolist.model;
+package com.github.hsabbas.todolist.model.api;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,10 +6,8 @@ import lombok.Setter;
 import java.sql.Date;
 
 @Getter @Setter
-public class UpdateTaskRequest {
-    private long taskId;
+public class CreateTaskRequest {
     private String name;
     private String description;
     private Date dueDate;
-    private boolean complete;
 }

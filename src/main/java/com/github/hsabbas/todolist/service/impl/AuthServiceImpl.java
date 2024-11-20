@@ -1,23 +1,24 @@
 package com.github.hsabbas.todolist.service.impl;
 
-import com.github.hsabbas.todolist.config.JWTTokenManager;
+import com.github.hsabbas.todolist.model.User;
+import com.github.hsabbas.todolist.model.UserPrincipal;
+import com.github.hsabbas.todolist.security.JWTTokenManager;
 import com.github.hsabbas.todolist.constants.JWTConstants;
 import com.github.hsabbas.todolist.constants.Roles;
-import com.github.hsabbas.todolist.model.*;
+import com.github.hsabbas.todolist.model.api.LoginRequest;
+import com.github.hsabbas.todolist.model.api.LoginResponse;
+import com.github.hsabbas.todolist.model.api.RegistrationRequest;
 import com.github.hsabbas.todolist.repository.UserRepository;
 import com.github.hsabbas.todolist.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor

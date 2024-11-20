@@ -1,8 +1,8 @@
 package com.github.hsabbas.todolist.service;
 
-import com.github.hsabbas.todolist.model.LoginRequest;
-import com.github.hsabbas.todolist.model.LoginResponse;
-import com.github.hsabbas.todolist.model.RegistrationRequest;
+import com.github.hsabbas.todolist.model.api.LoginRequest;
+import com.github.hsabbas.todolist.model.api.LoginResponse;
+import com.github.hsabbas.todolist.model.api.RegistrationRequest;
 import com.github.hsabbas.todolist.model.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;

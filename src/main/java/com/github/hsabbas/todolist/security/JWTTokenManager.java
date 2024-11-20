@@ -1,4 +1,4 @@
-package com.github.hsabbas.todolist.config;
+package com.github.hsabbas.todolist.security;
 
 import com.github.hsabbas.todolist.constants.JWTConstants;
 import io.jsonwebtoken.Jwts;

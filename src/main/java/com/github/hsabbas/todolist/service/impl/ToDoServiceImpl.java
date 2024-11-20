@@ -1,8 +1,8 @@
 package com.github.hsabbas.todolist.service.impl;
 
-import com.github.hsabbas.todolist.model.CreateTaskRequest;
+import com.github.hsabbas.todolist.model.api.CreateTaskRequest;
 import com.github.hsabbas.todolist.model.Task;
-import com.github.hsabbas.todolist.model.UpdateTaskRequest;
+import com.github.hsabbas.todolist.model.api.UpdateTaskRequest;
 import com.github.hsabbas.todolist.model.User;
 import com.github.hsabbas.todolist.repository.TaskRepository;
 import com.github.hsabbas.todolist.repository.UserRepository;

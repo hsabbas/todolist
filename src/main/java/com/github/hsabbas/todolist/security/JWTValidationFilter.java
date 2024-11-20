@@ -1,4 +1,4 @@
-package com.github.hsabbas.todolist.filter;
+package com.github.hsabbas.todolist.security;
 
 import com.github.hsabbas.todolist.constants.APIPaths;
 import com.github.hsabbas.todolist.constants.EnvironmentVariables;
@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
-import org.springframework.lang.NonNullApi;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
