@@ -12,8 +12,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.lang.NonNullApi;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -26,7 +26,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -76,6 +76,6 @@ public class JWTValidationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().equals(APIPaths.LOGIN) || request.getServletPath().equals(APIPaths.LOGOUT);
+        return Arrays.stream(APIPaths.PUBLIC_APIS).anyMatch(path -> Objects.equals(path, request.getServletPath()));
     }
 }

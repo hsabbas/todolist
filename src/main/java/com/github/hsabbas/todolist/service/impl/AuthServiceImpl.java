@@ -28,18 +28,14 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public HttpStatus saveNewUser(RegistrationRequest registrationRequest) {
+    public boolean saveNewUser(RegistrationRequest registrationRequest) {
         User user = new User();
         String hashedPassword = passwordEncoder.encode(registrationRequest.getPassword());
         user.setPassword(hashedPassword);
         user.setEmail(registrationRequest.getEmail());
         user.setRole(Roles.PREFIX + Roles.USER);
         User savedUser = userRepository.save(user);
-        if(savedUser.getId() > 0){
-            return HttpStatus.CREATED;
-        } else {
-            return HttpStatus.BAD_REQUEST;
-        }
+        return savedUser.getId() > 0;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
         Authentication authenticatedAuthentication = authenticationManager.authenticate(authentication);
 
         if(!authenticatedAuthentication.isAuthenticated()){
-            return new LoginResponse(false, 0l, "");
+            return new LoginResponse(false, 0L, "");
         }
 
         String jwtToken = jwtTokenManager.generateJWTToken(authenticatedAuthentication);
@@ -70,5 +66,10 @@ public class AuthServiceImpl implements AuthService {
         Cookie cookie = new Cookie(JWTConstants.COOKIE_NAME, null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
+    }
+
+    @Override
+    public boolean checkEmailIsAvailable(String email) {
+        return !userRepository.existsByEmail(email);
     }
 }

@@ -1,10 +1,7 @@
 package com.github.hsabbas.todolist.controller;
 
 import com.github.hsabbas.todolist.constants.APIPaths;
-import com.github.hsabbas.todolist.model.LoginRequest;
-import com.github.hsabbas.todolist.model.LoginResponse;
-import com.github.hsabbas.todolist.model.RegistrationRequest;
-import com.github.hsabbas.todolist.model.User;
+import com.github.hsabbas.todolist.model.*;
 import com.github.hsabbas.todolist.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -23,15 +20,14 @@ public class AuthController {
     @PostMapping(APIPaths.REGISTER)
     public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest registrationRequest){
         try{
-            HttpStatus status = authService.saveNewUser(registrationRequest);
-            if(status.is2xxSuccessful()){
-                return ResponseEntity.status(status).body("Registration successful!");
+            boolean saved = authService.saveNewUser(registrationRequest);
+            if(saved){
+                return new ResponseEntity<>("Registration successful!", HttpStatus.CREATED);
             } else {
-                return ResponseEntity.status(status).body("Registration failed");
+                return new ResponseEntity<>("Registration failed", HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An error occured: " + ex.getMessage());
+            return new ResponseEntity<>("An error occured: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -53,5 +49,11 @@ public class AuthController {
     public ResponseEntity<String> logout(HttpServletResponse response){
         authService.logoutUser(response);
         return new ResponseEntity<>("User logged out", HttpStatus.OK);
+    }
+
+    @GetMapping(APIPaths.CHECK_EMAIL)
+    public ResponseEntity<EmailAvailableResponse> checkEmailAvail(@RequestParam String email) {
+        boolean emailIsAvailable = authService.checkEmailIsAvailable(email);
+        return new ResponseEntity<>(new EmailAvailableResponse(emailIsAvailable), HttpStatus.OK);
     }
 }
